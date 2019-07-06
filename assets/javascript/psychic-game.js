@@ -1,14 +1,19 @@
+//Set up the variables
+var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 var lettersGuessed = [];
 var guessesLeft = 10;
 var wins = 0;
+var losses = 0;
 
-//use Math.random method along with String.fromCharCode method to generate a random letter
+
+//
 var computerGuess =
-    String.fromCharCode(
-        Math.round(Math.random() * 26) + 97
-    );
+    alphabet[
+        Math.round(Math.random() * 26)
+    ];
 
 console.log(computerGuess);
+
 //function to capture user's keyboard input and make the input lowercase
 document.onkeydown = function(event) {
     var keyPress = (String.fromCharCode(event.keyCode)).toLowerCase();
@@ -28,7 +33,7 @@ function addLetter (usersKeypress) {
 
     //alert player if the above code is true.
     if (repeatGuess) {
-        alert(usersKeypress + " You already guessed this letter. Try again!");
+        alert(usersKeypress + "   You already guessed this letter. Try again!");
 
         //if it is not a repeat guess, check if it's in word
     } else {
@@ -48,7 +53,21 @@ function showLettersGuessed() {
     var tempStr = lettersGuessed.join(", ");
     document.getElementById("playersGuess").innerHTML = tempStr;
 }
+//Display wins
+function showWins() {
+    document.getElementById("numWins").innerHTML = wins;
+    console.log("wins" + wins);
+}
 
+//Display losses
+function showLosses() {
+    document.getElementById("numLosses").innerHTML = losses;
+    console.log("losses" + losses);
+}
+//Display guesses remaining
+function showGuessesRemaining() {
+    document.getElementById("numGuesses").innerHTML = guessesLeft;
+}
 function guessMatch (character) {
 
     console.log(character);
@@ -63,7 +82,11 @@ function guessMatch (character) {
 
     } else if (guessesLeft === 0) {
         alert("Aw, shucks. You got this! Lets start over.");
-        resetVariables ();
+        losses = losses + 1;
+        showLosses();
+        // resetVariables ();
+        
+        
 
     } else {
         guessesLeft = guessesLeft - 1;
@@ -71,30 +94,36 @@ function guessMatch (character) {
     }
 }
 
-//function to show wins
-function showWins() {
-    document.getElementById("numWins").innerHTML = wins;
-}
-
-//function to show guesses remaining
-function showGuessesRemaining() {
-    document.getElementById("numGuesses").innerHTML = guessesLeft;
-}
-
 
 function resetVariables () {
     lettersGuessed = [];
     guessesLeft = 10;
+    computerGuess =
+        alphabet[
+            Math.round(Math.random() * 26)
+        ];
+
+    console.log(lettersGuessed);
+    console.log(guessesLeft);
+    console.log(computerGuess);
+
 }
 
 function startGame() {
     showGuessesRemaining();
+    showLettersGuessed();
     showWins();
+    showLosses();
 }
-
 
 
 startGame();
 
-//TODO make the computer guess another random letter once game is lost.
+$("#startOver").on("click", function() {
+    console.log("clicked start over");
+    resetVariables();
+    startGame();
+})
+
+
 
